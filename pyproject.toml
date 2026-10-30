@@ -1,0 +1,229 @@
+[build-system]
+requires = ["setuptools>=80"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pneumai-voice-studio"
+description = "Pneum.ai Voice Studio for local voice cloning and transcription"
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md", "vendor/nari-qwen3-tts/LICENSE"]
+requires-python = ">=3.12,<3.13"
+dynamic = ["version"]
+keywords = ["local-ai", "speech-to-text", "text-to-speech", "voice-cloning"]
+dependencies = [
+  "aiosqlite>=0.20.0",
+  "fastapi>=0.116.0",
+  "huggingface-hub>=0.33.0",
+  "librosa>=0.11.0",
+  "numpy>=1.26.0",
+  "pydantic>=2.11.0",
+  "pydantic-settings>=2.10.0",
+  "python-multipart>=0.0.20",
+  "PyYAML>=6.0.3",
+  "qwen-tts==0.1.1; sys_platform != 'darwin' or platform_machine != 'arm64'",
+  "safetensors>=0.5.0",
+  "soundfile>=0.13.0",
+  "sqlalchemy[asyncio]>=2.0.40",
+  "torch>=2.5.0",
+  "transformers>=4.53.0",
+  "uvicorn[standard]>=0.35.0",
+]
+
+[project.urls]
+Changelog = "https://gitlab.com/pneum.ai/voice-studio/-/blob/main/CHANGELOG.md"
+Issues = "https://gitlab.com/pneum.ai/voice-studio/-/issues"
+Repository = "https://gitlab.com/pneum.ai/voice-studio"
+
+[project.scripts]
+voice-open = "app.supervisor:studio_main"
+voice-open-api = "app.supervisor:main"
+
+[project.optional-dependencies]
+benchmark = [
+  "httpx>=0.28.0",
+]
+cpu = [
+  "qwen-tts==0.1.1",
+  "torch>=2.5.0",
+  "torchaudio>=2.5.0",
+]
+cuda = [
+  "flashinfer-python==0.6.16.post2; sys_platform == 'linux'",
+  "ninja==1.13.0; sys_platform == 'linux'",
+  "nvidia-cuda-crt==13.0.88; sys_platform == 'linux'",
+  "nvidia-cuda-nvcc==13.0.88; sys_platform == 'linux'",
+  "nvidia-nvvm==13.0.88; sys_platform == 'linux'",
+  "torch>=2.11.0,<2.12.0; sys_platform == 'linux' or sys_platform == 'win32'",
+  "torchaudio>=2.11.0,<2.12.0; sys_platform == 'linux' or sys_platform == 'win32'",
+  "triton==3.6.0; sys_platform == 'linux'",
+]
+cuda12 = [
+  "flashinfer-python==0.6.16.post2; sys_platform == 'linux'",
+  "ninja==1.13.0; sys_platform == 'linux'",
+  "torch>=2.11.0,<2.12.0; sys_platform == 'linux' or sys_platform == 'win32'",
+  "torchaudio>=2.11.0,<2.12.0; sys_platform == 'linux' or sys_platform == 'win32'",
+]
+mlx = [
+  "mlx>=0.26.0,<0.33; sys_platform == 'darwin' and platform_machine == 'arm64'",
+  "mlx-audio[stt]==0.5.9; sys_platform == 'darwin' and platform_machine == 'arm64'",
+  "tiktoken>=0.9.0; sys_platform == 'darwin' and platform_machine == 'arm64'",
+  "transformers>=5.14.0,<6; sys_platform == 'darwin' and platform_machine == 'arm64'",
+]
+nvidia-asr = [
+  "nemo-toolkit[asr]>=2.4,<3; sys_platform == 'linux'",
+]
+
+[dependency-groups]
+runtime = [
+  "flashinfer-python==0.6.16.post2; sys_platform == 'linux'",
+  "ninja==1.13.0; sys_platform == 'linux'",
+  "nvidia-cuda-crt==13.0.88; sys_platform == 'linux'",
+  "nvidia-cuda-nvcc==13.0.88; sys_platform == 'linux'",
+  "nvidia-nvvm==13.0.88; sys_platform == 'linux'",
+  "torch>=2.11.0,<2.12.0; sys_platform == 'linux' or sys_platform == 'win32'",
+  "torchaudio>=2.11.0,<2.12.0; sys_platform == 'linux' or sys_platform == 'win32'",
+  "triton==3.6.0; sys_platform == 'linux'",
+  "mlx>=0.26.0,<0.33; sys_platform == 'darwin' and platform_machine == 'arm64'",
+  "mlx-audio[stt]==0.5.9; sys_platform == 'darwin' and platform_machine == 'arm64'",
+  "tiktoken>=0.9.0; sys_platform == 'darwin' and platform_machine == 'arm64'",
+  "transformers>=5.14.0,<6; sys_platform == 'darwin' and platform_machine == 'arm64'",
+]
+dev = [
+  "httpx>=0.28.0",
+  "pyright>=1.1.404,<2",
+  "pytest>=8.4.0",
+  "pytest-asyncio>=1.0.0",
+  "ruff>=0.12.0,<1",
+]
+
+[tool.uv]
+# Resolve Apple's MLX Transformers stack separately from PyTorch Qwen's stack.
+environments = [
+  "sys_platform == 'darwin' and platform_machine == 'arm64'",
+  "sys_platform != 'darwin' or platform_machine != 'arm64'",
+]
+default-groups = ["runtime"]
+link-mode = "copy"
+conflicts = [
+  [
+    { extra = "cpu" },
+    { extra = "mlx" },
+  ],
+  [
+    { group = "runtime" },
+    { extra = "cpu" },
+  ],
+  [
+    { extra = "cpu" },
+    { extra = "cuda" },
+  ],
+  [
+    { group = "runtime" },
+    { extra = "cuda12" },
+  ],
+  [
+    { extra = "cpu" },
+    { extra = "cuda12" },
+  ],
+  [
+    { extra = "cuda" },
+    { extra = "cuda12" },
+  ],
+]
+exclude-newer = "1 week"
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cpu", extra = "cpu" },
+  { index = "pytorch-cu128", extra = "cuda12" },
+  { index = "pytorch-cu130", extra = "cuda" },
+  { index = "pytorch-cu130", group = "runtime", marker = "sys_platform != 'darwin'" },
+]
+torchaudio = [
+  { index = "pytorch-cpu", extra = "cpu" },
+  { index = "pytorch-cu128", extra = "cuda12" },
+  { index = "pytorch-cu130", extra = "cuda" },
+  { index = "pytorch-cu130", group = "runtime", marker = "sys_platform != 'darwin'" },
+]
+
+# qwen-tts imports Gradio only from its standalone demo CLI. Voice Open uses
+# the model and tokenizer library directly, so omit that unrelated web stack.
+[[tool.uv.dependency-metadata]]
+name = "qwen-tts"
+version = "0.1.1"
+requires-dist = [
+  "accelerate==1.12.0",
+  "einops",
+  "librosa",
+  "onnxruntime",
+  "soundfile",
+  "sox",
+  "torchaudio",
+  "transformers==4.57.3",
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[tool.pytest.ini_options]
+addopts = "-q"
+asyncio_mode = "auto"
+filterwarnings = [
+  "ignore:'aifc' is deprecated.*:DeprecationWarning:audioread.rawread",
+  "ignore:'audioop' is deprecated.*:DeprecationWarning:audioread.rawread",
+  "ignore:'sunau' is deprecated.*:DeprecationWarning:audioread.rawread",
+]
+testpaths = ["tests"]
+
+[tool.ruff]
+exclude = ["vendor"]
+indent-width = 2
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.format]
+indent-style = "space"
+quote-style = "double"
+
+[tool.ruff.lint]
+select = ["D", "E", "F", "I", "UP"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.pyright]
+extraPaths = ["vendor/nari-qwen3-tts/src"]
+include = ["app", "scripts", "server.py", "tests"]
+pythonVersion = "3.12"
+typeCheckingMode = "basic"
+
+[tool.setuptools]
+py-modules = ["server"]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = { attr = "app.__version__" }
+
+[tool.setuptools.packages.find]
+where = [".", "vendor/nari-qwen3-tts/src"]
+include = [
+  "app*",
+  "nari_qwen3_tts*",
+]
+
+[tool.setuptools.package-data]
+app = ["ui_dist/*", "ui_dist/assets/*"]
+nari_qwen3_tts = ["profiles/*.yaml"]

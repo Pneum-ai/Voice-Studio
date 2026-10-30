@@ -1,0 +1,70 @@
+/* Pneum.ai light and dark design tokens shared by every workspace. */
+
+:root {
+  color-scheme: light;
+  font-family:
+    "Segoe UI Variable Display",
+    "Aptos",
+    "Trebuchet MS",
+    sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --bg: #f6fbff;
+  --bg-elevated: #ffffff;
+  --panel: rgba(255, 255, 255, 0.9);
+  --panel-strong: #ffffff;
+  --panel-soft: #eef6ff;
+  --sidebar: rgba(250, 253, 255, 0.96);
+  --line: rgba(78, 139, 202, 0.2);
+  --line-strong: rgba(53, 133, 211, 0.36);
+  --text: #10294d;
+  --text-strong: #081b39;
+  --muted: #5d7696;
+  --muted-strong: #3f5f84;
+  --accent: #168af4;
+  --accent-strong: #0571de;
+  --accent-bright: #20bdf5;
+  --accent-soft: rgba(22, 138, 244, 0.1);
+  --success: #16a57f;
+  --success-soft: rgba(22, 165, 127, 0.11);
+  --warning: #d48b12;
+  --danger: #d74848;
+  --danger-soft: rgba(215, 72, 72, 0.1);
+  --shadow: 0 20px 55px rgba(56, 114, 176, 0.13);
+  --shadow-soft: 0 10px 30px rgba(56, 114, 176, 0.09);
+  --glow: 0 12px 35px rgba(22, 138, 244, 0.24);
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 9px;
+  --sidebar-width: 218px;
+  --topbar-height: 88px;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #081421;
+  --bg-elevated: #0c1b2c;
+  --panel: rgba(11, 29, 47, 0.88);
+  --panel-strong: #0d2035;
+  --panel-soft: #102842;
+  --sidebar: rgba(7, 24, 40, 0.96);
+  --line: rgba(121, 176, 229, 0.16);
+  --line-strong: rgba(61, 172, 255, 0.43);
+  --text: #dfeeff;
+  --text-strong: #f4f9ff;
+  --muted: #9db4d0;
+  --muted-strong: #bed0e5;
+  --accent: #1ea7f7;
+  --accent-strong: #098be9;
+  --accent-bright: #20c8ff;
+  --accent-soft: rgba(27, 169, 248, 0.12);
+  --success: #4cdbb0;
+  --success-soft: rgba(76, 219, 176, 0.1);
+  --warning: #ffd079;
+  --danger: #ff8181;
+  --danger-soft: rgba(255, 101, 101, 0.1);
+  --shadow: 0 22px 58px rgba(0, 0, 0, 0.32);
+  --shadow-soft: 0 14px 34px rgba(0, 0, 0, 0.22);
+  --glow: 0 12px 35px rgba(23, 171, 250, 0.27);
+}

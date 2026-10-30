@@ -1,0 +1,20 @@
+/* Primary source-shelf and timeline-column geometry for the audio editor. */
+
+.editor-workspace {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 220px minmax(420px, 1fr);
+  align-items: start;
+  gap: 14px;
+}
+
+.editor-workspace.is-sources-collapsed {
+  grid-template-columns: 54px minmax(420px, 1fr);
+}
+
+.editor-main-column {
+  display: grid;
+  min-width: 0;
+  align-content: start;
+  gap: 14px;
+}

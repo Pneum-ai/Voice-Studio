@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+      - run: npm install --global npm@11.10.0
+      - run: npm --prefix ui ci
+      - run: npm --prefix ui run lint
+      - run: npm --prefix ui run test
+      - run: npm --prefix ui run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frontend
+          path: app/ui_dist/
+          retention-days: 7
+          if-no-files-found: error
+
+  backend:
+    needs: frontend
+    runs-on: ubuntu-latest
+    env:
+      UV_LINK_MODE: copy
+    steps:
+      - uses: actions/checkout@v4
+      - run: rm -rf app/ui_dist
+      - uses: actions/download-artifact@v4
+        with:
+          name: frontend
+          path: app/ui_dist/
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.12"
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libatomic1
+      - run: uv sync --no-group runtime --extra cpu --group dev
+      - run: uv run --no-sync -- ruff format --check .
+      - run: uv run --no-sync -- ruff check .
+      - run: uv run --no-sync -- pyright
+      - run: uv run --no-sync -- python -m scripts.check_source
+      - run: uv run --no-sync -- pytest
+      - run: uv run --no-sync -- python -m scripts.verify_distribution

@@ -1,0 +1,480 @@
+/* Browser audio editor source shelf, transport, timeline, and clip inspector. */
+
+.editor-page {
+  min-width: 0;
+}
+
+.editor-title-row {
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.editor-project-name {
+  width: min(620px, 72vw);
+  padding: 0;
+  border: 0;
+  color: var(--text-strong);
+  outline: 0;
+  background: transparent;
+  font-size: clamp(1.7rem, 2.4vw, 2.15rem);
+  font-weight: 780;
+  letter-spacing: -0.035em;
+}
+
+.editor-project-name:focus {
+  box-shadow: 0 2px 0 var(--accent);
+}
+
+.editor-draft-state,
+.editor-timeline-panel > header > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.editor-transport {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 13px;
+  margin-bottom: 16px;
+}
+
+.editor-play-controls,
+.editor-history-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editor-play-controls output {
+  min-width: 96px;
+  color: var(--muted-strong);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.78rem;
+}
+
+.editor-play-button {
+  min-width: 94px;
+}
+
+.editor-sources,
+.editor-inspector,
+.editor-timeline-panel {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.editor-sources {
+  padding: 16px;
+}
+
+.editor-inspector {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px 16px;
+  padding: 14px 16px;
+}
+
+.editor-inspector > header,
+.editor-inspector > header > div {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.editor-sources > header,
+.editor-inspector > header,
+.editor-timeline-panel > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.editor-sources h2,
+.editor-inspector h2,
+.editor-timeline-panel h2 {
+  margin: 0;
+}
+
+.editor-source-count {
+  padding: 4px 8px;
+  border-radius: 999px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  font-size: 0.7rem;
+  font-weight: 750;
+}
+
+.editor-source-toggle {
+  width: 32px;
+  height: 32px;
+}
+
+.editor-sources.is-collapsed {
+  padding: 10px;
+}
+
+.editor-sources.is-collapsed > header {
+  justify-content: center;
+}
+
+.editor-sources.is-collapsed > header > div,
+.editor-sources.is-collapsed .editor-source-count {
+  display: none;
+}
+
+.editor-capture-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  margin: 16px 0 10px;
+}
+
+.editor-source-search {
+  height: 38px;
+}
+
+.editor-source-hint {
+  margin: 10px 2px;
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+
+.editor-source-list {
+  display: grid;
+  max-height: 560px;
+  gap: 7px;
+  overflow-y: auto;
+}
+
+.editor-source-card {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  padding: 9px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--panel-soft);
+  cursor: grab;
+}
+
+.editor-source-card:active {
+  cursor: grabbing;
+}
+
+.editor-source-card > div {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.editor-source-card strong,
+.editor-source-card small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.editor-source-card strong {
+  font-size: 0.78rem;
+}
+
+.editor-source-card small {
+  color: var(--muted);
+  font-size: 0.64rem;
+}
+
+.editor-source-card .icon-button {
+  width: 31px;
+  height: 31px;
+}
+
+.editor-source-icon {
+  display: grid;
+  width: 33px;
+  height: 33px;
+  place-content: center;
+  border-radius: 9px;
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.editor-source-icon.is-recording {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.editor-source-empty {
+  display: grid;
+  min-height: 110px;
+  place-content: center;
+  justify-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.editor-timeline-panel > header {
+  min-height: 67px;
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--line);
+}
+
+.editor-timeline-scroll {
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+
+.editor-timeline {
+  position: relative;
+  min-height: 190px;
+  background:
+    linear-gradient(90deg, var(--line) 1px, transparent 1px),
+    var(--panel-soft);
+  background-size: 36px 100%;
+}
+
+.editor-ruler {
+  position: relative;
+  height: 37px;
+  border-bottom: 1px solid var(--line);
+}
+
+.editor-ruler span {
+  position: absolute;
+  top: 12px;
+  color: var(--muted);
+  font-size: 0.62rem;
+  transform: translateX(4px);
+}
+
+.editor-ruler span::before {
+  position: absolute;
+  top: 17px;
+  left: -4px;
+  width: 1px;
+  height: 7px;
+  content: "";
+  background: var(--line-strong);
+}
+
+.editor-track-label {
+  display: inline-flex;
+  height: 34px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  color: var(--muted-strong);
+  font-size: 0.68rem;
+  font-weight: 720;
+}
+
+.editor-track-lane {
+  position: relative;
+  height: 84px;
+  border-block: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel-strong) 75%, transparent);
+}
+
+.editor-track-lane > p {
+  position: absolute;
+  top: 23px;
+  left: 28px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.editor-clip {
+  position: absolute;
+  top: 8px;
+  display: grid;
+  height: 66px;
+  min-width: 54px;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  align-items: center;
+  gap: 3px 5px;
+  padding: 6px 7px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line));
+  border-radius: 9px;
+  color: var(--text);
+  background:
+    linear-gradient(145deg, var(--accent-soft), transparent),
+    var(--panel-strong);
+  cursor: grab;
+  text-align: left;
+}
+
+.editor-clip.is-selected {
+  border-color: var(--accent-bright);
+  box-shadow: 0 0 0 2px var(--accent-soft), var(--glow);
+}
+
+.editor-clip-copy {
+  display: grid;
+  min-width: 0;
+}
+
+.editor-clip-copy strong,
+.editor-clip-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.editor-clip-copy strong {
+  font-size: 0.72rem;
+}
+
+.editor-clip-copy small {
+  color: var(--muted);
+  font-size: 0.6rem;
+}
+
+.editor-clip-waveform {
+  display: flex;
+  height: 21px;
+  grid-column: 1 / -1;
+  align-items: center;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.editor-clip-waveform i {
+  width: 2px;
+  min-width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(var(--accent-bright), var(--accent));
+  opacity: 0.78;
+}
+
+.editor-playhead {
+  position: absolute;
+  z-index: 4;
+  top: 28px;
+  bottom: 12px;
+  width: 2px;
+  pointer-events: none;
+  background: var(--accent-bright);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.editor-playhead::before {
+  position: absolute;
+  top: 0;
+  left: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  content: "";
+  background: var(--accent-bright);
+}
+
+.editor-drop-guide {
+  position: absolute;
+  z-index: 7;
+  top: 30px;
+  bottom: 8px;
+  width: 1px;
+  pointer-events: none;
+  border-left: 1px dashed var(--accent-bright);
+}
+
+.editor-drop-guide.is-snapped {
+  width: 2px;
+  border-left: 2px solid var(--success);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--success) 55%, transparent);
+}
+
+.editor-drop-guide b {
+  position: absolute;
+  top: 8px;
+  left: 7px;
+  padding: 4px 7px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  color: var(--text-strong);
+  background: var(--panel-strong);
+  box-shadow: var(--shadow-soft);
+  font-size: 0.62rem;
+  white-space: nowrap;
+}
+
+.editor-drop-guide.is-snapped b {
+  color: var(--success);
+  border-color: color-mix(in srgb, var(--success) 45%, transparent);
+}
+
+.editor-inspector.is-empty {
+  min-height: 72px;
+  grid-template-columns: auto auto minmax(180px, 1fr);
+  align-items: center;
+}
+
+.editor-inspector.is-empty h2 {
+  margin: 0;
+}
+
+.editor-inspector.is-empty p:last-child {
+  margin: 0;
+  font-size: 0.78rem;
+}
+
+.editor-inspector h2 {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 1rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.editor-inspector-grid {
+  display: grid;
+  grid-column: 2;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.editor-range-grid {
+  display: grid;
+  grid-column: 2;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.editor-inspector .field > span {
+  justify-content: space-between;
+  font-size: 0.76rem;
+}
+
+.editor-inspector .field input {
+  height: 38px;
+}
+
+.editor-range-field {
+  margin-top: 2px;
+}
+
+.editor-range-field input[type="range"] {
+  height: 20px;
+  padding: 0;
+  accent-color: var(--accent);
+}
+
+.editor-inspector-note {
+  grid-column: 1 / -1;
+  padding-top: 13px;
+  margin: 14px 0 0;
+  border-top: 1px solid var(--line);
+  font-size: 0.68rem;
+  line-height: 1.5;
+}

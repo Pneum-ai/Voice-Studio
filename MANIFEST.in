@@ -1,0 +1,8 @@
+include LICENSE
+include README.md
+include THIRD_PARTY_NOTICES.md
+recursive-include app/ui_dist *
+recursive-include docs *.json *.md *.png
+recursive-include scripts *.ps1 *.py *.sh
+recursive-include vendor/nari-qwen3-tts/src *.py *.yaml
+include vendor/nari-qwen3-tts/LICENSE

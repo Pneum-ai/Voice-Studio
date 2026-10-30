@@ -1,0 +1,5 @@
+/artifacts/ export-ignore
+/benchmark-*.json export-ignore
+/runpod-benchmark-results/ export-ignore
+/.gitlab-ci.yml export-ignore
+/AGENTS.md export-ignore
