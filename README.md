@@ -6,7 +6,7 @@ transcription, and lightweight audio editing.
 Voice Studio combines a FastAPI service with a bundled React interface. It keeps voice
 samples, model weights, generated audio, and metadata on your machine.
 
-![Voice Studio speech creation screen](https://gitlab.com/pneum.ai/voice-studio/-/raw/main/docs/screenshots/create-speech.png)
+![Voice Studio speech creation screen](docs/screenshots/create-speech.png)
 
 > [!IMPORTANT]
 > Clone only voices you own or have permission to use. Model weights and third-party
@@ -33,8 +33,8 @@ the first stable release.
 Install [uv](https://docs.astral.sh/uv/), clone the repository, and run:
 
 ```bash
-git clone https://gitlab.com/pneum.ai/voice-studio.git
-cd voice-studio
+git clone https://github.com/Pneum-ai/Voice-Studio.git
+cd Voice-Studio
 uv run voice-open
 ```
 
@@ -116,7 +116,7 @@ that model and a built-in speaker, then optionally add delivery instructions suc
 use cloned voices and do not support delivery instructions. Both modes support live
 playback and saving to Library on MLX and NVIDIA/Nari.
 
-![Voice Studio library with saved speech and playback controls](https://gitlab.com/pneum.ai/voice-studio/-/raw/main/docs/screenshots/library.png)
+![Voice Studio library with saved speech and playback controls](docs/screenshots/library.png)
 
 ## Other runtime modes
 
